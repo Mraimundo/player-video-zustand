@@ -20,7 +20,8 @@ export function Module({ moduleIndex, title, amountOfLesson }: ModuleProps) {
   const currentLessonIndex = usePlayerStore(
     (state) => state.currentLessonIndex
   );
-  const lessons = course?.modules[moduleIndex]?.lessons ?? [];
+
+  const lessons = course?.modules?.[moduleIndex]?.lessons ?? [];
 
   if (isLoading) return <SkeletonScreen />;
 
