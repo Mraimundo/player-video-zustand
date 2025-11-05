@@ -7,10 +7,11 @@ import { usePlayerStore } from "../store/player";
 import { useCurrentLesson } from "../hooks/useCurrentLesson";
 
 export function Player() {
-  const { currentLesson } = useCurrentLesson();
   const modules = usePlayerStore((state) => state.course?.modules);
   const resetProgress = usePlayerStore((state) => state.resetProgress);
   const isLoading = usePlayerStore((state) => state.isLoading);
+
+  const { currentLesson } = useCurrentLesson();
 
   useEffect(() => {
     const state = usePlayerStore.getState();
@@ -18,17 +19,41 @@ export function Player() {
   }, []);
 
   useEffect(() => {
-    if (currentLesson) {
-      document.title = currentLesson.title;
-    }
+    document.title = currentLesson?.title ?? "Carregando curso...";
   }, [currentLesson]);
+
+  const renderModules = () => {
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center h-full text-zinc-400 text-sm p-4">
+          Carregando módulos...
+        </div>
+      );
+    }
+
+    if (!modules || modules.length === 0) {
+      return (
+        <div className="flex items-center justify-center h-full text-zinc-500 text-sm p-4">
+          Nenhum módulo encontrado.
+        </div>
+      );
+    }
+
+    return modules.map((module, index) => (
+      <Module
+        key={module.id}
+        moduleIndex={index}
+        title={module.title}
+        amountOfLesson={module.lessons.length}
+      />
+    ));
+  };
 
   return (
     <div className="h-screen bg-zinc-950 text-zinc-50 flex justify-center items-center">
       <div className="flex w-[1100px] flex-col gap-6">
         <div className="flex items-center justify-between">
           <Header />
-
           <div className="flex gap-2">
             <button
               onClick={resetProgress}
@@ -51,20 +76,7 @@ export function Player() {
           </div>
 
           <aside className="w-80 absolute top-0 bottom-0 right-0 divide-y-2 divide-zinc-900 border-l border-zinc-800 bg-zinc-900 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            {isLoading && !modules ? (
-              <div className="flex items-center justify-center h-full text-zinc-400 text-sm p-4">
-                Carregando módulos...
-              </div>
-            ) : (
-              modules?.map((module, index) => (
-                <Module
-                  key={module.id}
-                  moduleIndex={index}
-                  title={module.title}
-                  amountOfLesson={module.lessons.length}
-                />
-              ))
-            )}
+            {renderModules()}
           </aside>
         </main>
       </div>
