@@ -6,13 +6,28 @@ export function Header() {
   const isCourseLoading = usePlayerStore((state) => state.isLoading);
 
   if (isCourseLoading) {
-    return <h1 className="text-2xl font-bold">Carregando...</h1>;
+    return (
+      <header
+        aria-live="polite"
+        aria-busy="true"
+        className="flex flex-col gap-1"
+      >
+        <h1 className="text-2xl font-bold">Carregando...</h1>
+      </header>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <h1 className="text-2xl font-bold">{currentLesson?.title}</h1>
-      <span className="text-sm text-zinc-400">{currentModule?.title}</span>
-    </div>
+    <header className="flex  flex-col gap-1">
+      <h1 className="text-2xl font-bold truncate" title={currentLesson?.title}>
+        {currentLesson?.title ?? "Aula indisponível"}
+      </h1>
+      <span
+        className="text-sm text-zinc-400 truncate"
+        title={currentModule?.title}
+      >
+        {currentModule?.title}
+      </span>
+    </header>
   );
 }
