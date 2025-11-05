@@ -14,14 +14,27 @@ export function Video() {
 
   if (isLoading || !currentLesson) {
     return (
-      <div className="flex h-full items-center justify-center bg-zinc-950 aspect-video">
-        <Loader className="w-6 h-6 text-zinc-400 animate-spin" />
+      <div
+        className="flex h-full items-center justify-center bg-zinc-950 aspect-video"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        <Loader
+          className="w-6 h-6 text-zinc-400 animate-spin"
+          aria-hidden="true"
+        />
+        <span className="sr-only">Carregando vídeo</span>
       </div>
     );
   }
 
   return (
-    <div className="w-full bg-zinc-950 aspect-video">
+    <div
+      className="w-full bg-zinc-950 aspect-video"
+      role="region"
+      aria-label={`Player de vídeo: ${currentLesson.title}`}
+    >
       <ReactPlayer
         width="100%"
         height="100%"
