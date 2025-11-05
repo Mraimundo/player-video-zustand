@@ -1,7 +1,5 @@
+import { Player } from "./pages/Player";
+
 export function App() {
-  return (
-    <>
-      <h1>Player Video Zustand</h1>
-    </>
-  );
+  return <Player />;
 }
