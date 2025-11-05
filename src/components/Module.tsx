@@ -27,12 +27,14 @@ export function Module({ moduleIndex, title, amountOfLesson }: ModuleProps) {
 
   return (
     <Collapsible.Root
-      className="group border-b border-zinc-800"
       defaultOpen={moduleIndex === 0}
+      className="group border-b border-zinc-800"
     >
       <Collapsible.Trigger
-        className="flex w-full items-center gap-3 bg-zinc-900/60 p-4 
-                   hover:bg-zinc-900 transition-colors duration-200"
+        className="flex w-full items-center gap-3 bg-zinc-900/60 p-4 hover:bg-zinc-900 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        aria-controls={`module-${moduleIndex}-lessons`}
+        aria-expanded={moduleIndex === 0}
+        type="button"
       >
         <span
           className={`flex w-10 h-10 rounded-full items-center justify-center text-xs font-medium 
@@ -45,40 +47,44 @@ export function Module({ moduleIndex, title, amountOfLesson }: ModuleProps) {
           {moduleIndex + 1}
         </span>
 
-        <div className="flex flex-col text-left">
-          <strong className="text-sm text-zinc-100">{title}</strong>
+        <div className="flex flex-col text-left min-w-0">
+          <strong className="text-sm text-zinc-100 truncate" title={title}>
+            {title}
+          </strong>
           <span className="text-xs text-zinc-500">
             {amountOfLesson} {amountOfLesson === 1 ? "aula" : "aulas"}
           </span>
         </div>
 
         <ChevronDown
-          className="w-5 h-5 ml-auto text-zinc-400 
-                     transition-transform duration-300 group-data-[state=open]:rotate-180"
+          className="w-5 h-5 ml-auto text-zinc-400 transition-transform duration-300 group-data-[state=open]:rotate-180"
+          aria-hidden="true"
         />
       </Collapsible.Trigger>
 
-      <Collapsible.Content>
-        <nav className="flex flex-col gap-3 px-6 py-4 bg-zinc-950/60">
-          {lessons.map((lesson, lessonIndex) => {
-            const isCurrent =
-              currentModuleIndex === moduleIndex &&
-              currentLessonIndex === lessonIndex;
+      <Collapsible.Content id={`module-${moduleIndex}-lessons`}>
+        <nav aria-label={`Aulas do módulo ${moduleIndex + 1}: ${title}`}>
+          <ul className="flex flex-col gap-3 px-6 py-4 bg-zinc-950/60">
+            {lessons.map((lesson, lessonIndex) => {
+              const isCurrent =
+                currentModuleIndex === moduleIndex &&
+                currentLessonIndex === lessonIndex;
+              const handlePlay = () => {
+                if (!isCurrent) play(moduleIndex, lessonIndex);
+              };
 
-            const handlePlay = () => {
-              if (!isCurrent) play(moduleIndex, lessonIndex);
-            };
-
-            return (
-              <Lesson
-                key={lesson.id}
-                title={lesson.title}
-                duration={lesson.duration}
-                isCurrent={isCurrent}
-                onPlay={handlePlay}
-              />
-            );
-          })}
+              return (
+                <li key={lesson.id}>
+                  <Lesson
+                    title={lesson.title}
+                    duration={lesson.duration}
+                    isCurrent={isCurrent}
+                    onPlay={handlePlay}
+                  />
+                </li>
+              );
+            })}
+          </ul>
         </nav>
       </Collapsible.Content>
     </Collapsible.Root>
