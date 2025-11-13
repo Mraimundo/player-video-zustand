@@ -338,13 +338,6 @@ export default function App() {
 
 ## Licença
 
-(Adicionar a licença do projeto, ex.: MIT)
+(Adicionar a licença do projeto, : MIT)
 
 ---
-
-Se quiser, eu posso:
-- Gerar esse README.md diretamente no repositório (push) — me diga se quer que eu crie/atualize o arquivo e em qual branch.
-- Gerar documentação adicional (ex.: docs/architecture.md, docs/api.md) com diagramas ou referência de componentes e tipos TypeScript.
-- Inspecionar arquivos do repositório e adaptar a documentação automaticamente para refletir a estrutura real do código.
-
-O que prefere que eu faça a seguir?
